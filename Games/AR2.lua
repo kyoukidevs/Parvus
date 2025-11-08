@@ -30,7 +30,6 @@ local Vehicles
 local Characters = Workspace.Characters
 local Corpses = Workspace.Corpses
 local Zombies = Workspace.Zombies
-local Loot
 
 local Framework = require(ReplicatedFirst:WaitForChild("Framework"))
 Framework:WaitForLoaded()
@@ -1719,6 +1718,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
