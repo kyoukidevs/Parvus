@@ -1473,28 +1473,6 @@ Animators.Post = function(Self, Name, ...) local Args = {...}
         Args[1][5] = Args[1][5] * (Window.Flags["AR2/Recoil/KickUpForce"] / 100)
     end return OldPost(Self, Name, unpack(Args))
 end]]
-local OldFlinch; OldFlinch = hookfunction(CharacterCamera.Flinch, newcclosure(function(Self, ...)
-    if Window.Flags["AR2/NoFlinch"] then return end
-    return OldFlinch(Self, ...)
-end))
-local OldCharacterGroundCast; OldCharacterGroundCast = hookfunction(Raycasting.CharacterGroundCast, newcclosure(function(Self, Position, LengthDown, ...)
-    if PlayerClass.Character and Position == PlayerClass.Character.RootPart.CFrame then
-        if Window.Flags["AR2/UseInAir"] then
-            return GroundPart, CFrame.new(), Vector3.new(0, 1, 0)
-            --LengthDown = 1022
-        end
-    end
-    return OldCharacterGroundCast(Self, Position, LengthDown, ...)
-end))
---[[local OldSwimCheckCast = Raycasting.SwimCheckCast
-Raycasting.SwimCheckCast = function(Self, ...)
-    if Window.Flags["AR2/UseInWater"] then return nil end
-    return OldSwimCheckCast(Self, ...)
-end]]
-local OldPlayAnimation; OldPlayAnimation = hookfunction(Animators.PlayAnimation, newcclosure(function(Self, Path, ...)
-    if Path == "Actions.Fall Impact" and Window.Flags["AR2/NoFallImpact"] then return end
-    return OldPlayAnimation(Self, Path, ...)
-end))
 -- Old Vehicle Mod
 --[[local OldVC = VehicleController.new
 VehicleController.new = function(...)
@@ -1520,30 +1498,6 @@ VehicleController.new = function(...)
     return unpack(ReturnArgs)
 end]]
 
-local OldCD; OldCD = hookfunction(Events["Character Dead"], newcclosure(function(...)
-    if Window.Flags["AR2/FastRespawn"] then
-        task.spawn(function() SetIdentity(2)
-            PlayerClass:UnloadCharacter()
-            Interface:Hide("Reticle")
-            task.wait(0.5)
-            PlayerClass:LoadCharacter()
-        end)
-    end
-
-    return OldCD(...)
-end))
-local OldLSU; OldLSU = hookfunction(Events["Lighting State Update"], newcclosure(function(Data, ...)
-    LightingState = Data
-    OldBaseTime = LightingState.BaseTime
-    --print("Lighting State Updated")
-    return OldLSU(Data, ...)
-end))
-local OldSquadUpdate; OldSquadUpdate = hookfunction(Events["Squad Update"], newcclosure(function(Data, ...)
-    SquadData = Data
-    --print(repr(SquadData))
-    --print("Squad Updated")
-    return OldSquadUpdate(Data, ...)
-end))
 local OldICA; OldICA = hookfunction(Events["Inventory Container Added"], newcclosure(function(Id, Data, ...)
     if not Window.Flags["AR2/ESP/Items/Containers/Enabled"] then return OldICA(Id, Data, ...) end
 
@@ -1802,6 +1756,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
