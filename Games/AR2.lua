@@ -1689,7 +1689,7 @@ for Index, Corpse in pairs(Corpses:GetChildren()) do
         "AR2/ESP/Corpses", "AR2/ESP/Corpses", Window.Flags
     )
 end
-for Index, Zombie in pairs(Zombies.Mobs:GetChildren()) do
+for Index, Zombie in pairs(Zombies:GetChildren()) do
     if not Zombie.PrimaryPart then continue end
     local Config = require(Zombies.Configs[Zombie.Name])
 
@@ -1756,6 +1756,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
