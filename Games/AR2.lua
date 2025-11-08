@@ -1026,19 +1026,7 @@ local function GetCharactersInRadius(Path, Distance)
     return Closest
 end
 local function GetItemsInRadius(Distance)
-    local Closest = {}
-
-    for Index, Item in pairs(LootBins:GetChildren()) do
-        for Index, Group in pairs(Item:GetChildren()) do
-            local Part = Group:FindFirstChild("Part")
-            if not Part then continue end
-
-            local Magnitude = (Part.Position - Camera.CFrame.Position).Magnitude
-            if Distance >= Magnitude then table.insert(Closest, Group) end
-        end
-    end
-
-    return Closest
+    return Distance
 end
 
 local function Length(Table) local Count = 0
@@ -1750,24 +1738,6 @@ Parvus.Utilities.NewThreadLoop(1, function()
     end
 end)
 
-for Index, Item in pairs(Loot:GetDescendants()) do
-    if Item:IsA("CFrameValue") then
-        local ItemData = ReplicatedStorage.ItemData:FindFirstChild(Item.Name, true)
-        if not ItemData then continue end --print(ItemData.Parent.Name)
-
-        Parvus.Utilities.Drawing:AddObject(Item, Item.Name, Item.Value.Position,
-            "AR2/ESP/Items", "AR2/ESP/Items/" .. ItemData.Parent.Name, Window.Flags
-        )
-    end
-end
-for Index, Event in pairs(Randoms:GetChildren()) do
-    for Index, Data in pairs(RandomEvents) do
-        if Event.Name ~= Data[1] then continue end --print(Event.Name)
-        Parvus.Utilities.Drawing:AddObject(Event, Event.Name, Event.Value.Position,
-            "AR2/ESP/RandomEvents", "AR2/ESP/RandomEvents/" .. Event.Name, Window.Flags
-        )
-    end
-end
 for Index, Corpse in pairs(Corpses:GetChildren()) do
     if Corpse.Name == "Zombie" then continue end
     if not Corpse.PrimaryPart then continue end
@@ -1794,40 +1764,7 @@ for Index, Zombie in pairs(Zombies.Mobs:GetChildren()) do
         end
     end
 end
-for Index, Vehicle in pairs(Vehicles:GetChildren()) do
-    if not Vehicle.PrimaryPart then continue end
 
-    Parvus.Utilities.Drawing:AddObject(
-        Vehicle, Vehicle.Name, Vehicle.PrimaryPart,
-        "AR2/ESP/Vehicles", "AR2/ESP/Vehicles", Window.Flags
-    )
-end
-
-Loot.DescendantAdded:Connect(function(Item)
-    if Item:IsA("CFrameValue") then
-        local ItemData = ReplicatedStorage.ItemData:FindFirstChild(Item.Name, true)
-        if not ItemData then return end --print(ItemData.Parent.Name)
-
-        Parvus.Utilities.Drawing:AddObject(Item, Item.Name, Item.Value.Position,
-            "AR2/ESP/Items", "AR2/ESP/Items/" .. ItemData.Parent.Name, Window.Flags
-        )
-    end
-end)
-Randoms.ChildAdded:Connect(function(Event)
-    for Index, Data in pairs(RandomEvents) do
-        if Event.Name ~= Data[1] then continue end --print(Event.Name)
-        Parvus.Utilities.Drawing:AddObject(Event, Event.Name, Event.Value.Position,
-            "AR2/ESP/RandomEvents", "AR2/ESP/RandomEvents/" .. Event.Name, Window.Flags
-        )
-
-        if Window.Flags["AR2/ESP/RandomEvents/Enabled"]
-        and Window.Flags["AR2/ESP/RandomEvents/" .. Event.Name] then
-            local Distance = (Event.Value.Position - Camera.CFrame.Position).Magnitude
-            local Title = string.format("%s spawned (~%i studs away)", Event.Name, Distance)
-            Parvus.Utilities.UI:Toast({Title = Title, Duration = 20})
-        end
-    end
-end)
 Corpses.ChildAdded:Connect(function(Corpse)
     if Corpse.Name == "Zombie" then return end
     repeat task.wait() until Corpse.PrimaryPart
@@ -1853,30 +1790,12 @@ Zombies.Mobs.ChildAdded:Connect(function(Zombie)
         end
     end
 end)
-Vehicles.ChildAdded:Connect(function(Vehicle)
-    repeat task.wait() until Vehicle.PrimaryPart
-    --print(Vehicle.Name)
 
-    Parvus.Utilities.Drawing:AddObject(
-        Vehicle, Vehicle.Name, Vehicle.PrimaryPart,
-        "AR2/ESP/Vehicles", "AR2/ESP/Vehicles", Window.Flags
-    )
-end)
-
-Loot.DescendantRemoving:Connect(function(Item)
-    Parvus.Utilities.Drawing:RemoveObject(Item)
-end)
-Randoms.ChildRemoved:Connect(function(Event)
-    Parvus.Utilities.Drawing:RemoveObject(Event)
-end)
 Corpses.ChildRemoved:Connect(function(Corpse)
     Parvus.Utilities.Drawing:RemoveObject(Corpse)
 end)
 Zombies.Mobs.ChildRemoved:Connect(function(Zombie)
     Parvus.Utilities.Drawing:RemoveObject(Zombie)
-end)
-Vehicles.ChildRemoved:Connect(function(Vehicle)
-    Parvus.Utilities.Drawing:RemoveObject(Vehicle)
 end)
 
 Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
@@ -1895,4 +1814,5 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
