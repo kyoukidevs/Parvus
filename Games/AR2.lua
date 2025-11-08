@@ -1698,29 +1698,9 @@ Corpses.ChildAdded:Connect(function(Corpse)
         "AR2/ESP/Corpses", "AR2/ESP/Corpses", Window.Flags
     )
 end)
-Zombies.Mobs.ChildAdded:Connect(function(Zombie)
-    repeat task.wait() until Zombie.PrimaryPart
-    local Config = require(Zombies.Configs[Zombie.Name])
-
-    if not Config.Inherits then return end
-    for Index, Inherit in pairs(Config.Inherits) do
-        for Index, Data in pairs(ZombieInherits) do
-            if Inherit ~= Data[1] then continue end --print(Inherit.Name)
-            local InheritName = Inherit:gsub("Presets.", ""):gsub(" ", "")
-
-            Parvus.Utilities.Drawing:AddObject(
-                Zombie, Zombie.Name, Zombie.PrimaryPart, "AR2/ESP/Zombies",
-                "AR2/ESP/Zombies/"..InheritName, Window.Flags
-            )
-        end
-    end
-end)
 
 Corpses.ChildRemoved:Connect(function(Corpse)
     Parvus.Utilities.Drawing:RemoveObject(Corpse)
-end)
-Zombies.Mobs.ChildRemoved:Connect(function(Zombie)
-    Parvus.Utilities.Drawing:RemoveObject(Zombie)
 end)
 
 Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
@@ -1739,6 +1719,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
