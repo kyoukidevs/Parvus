@@ -611,14 +611,12 @@ local WallCheckParams = RaycastParams.new()
 WallCheckParams.FilterType = Enum.RaycastFilterType.Blacklist
 WallCheckParams.FilterDescendantsInstances = {
     Workspace.Effects,
-    Workspace.Locations, Workspace.Spawns
 } WallCheckParams.IgnoreWater = true
 
 local function Raycast(Origin, Direction)
     if not table.find(WallCheckParams.FilterDescendantsInstances, LocalPlayer.Character) then
         WallCheckParams.FilterDescendantsInstances = {
             Workspace.Effects,
-            Workspace.Locations, Workspace.Spawns,
             LocalPlayer.Character
         } --print("added character to raycast")
     end
@@ -1814,6 +1812,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
