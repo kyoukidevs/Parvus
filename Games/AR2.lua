@@ -1423,16 +1423,6 @@ setupvalue(Firearm, 7, function(...)
 
     return AnimatedReload(...)
 end)
-setupvalue(InteractHeartbeat, 11, function(...)
-    if Window.Flags["AR2/InstantSearch"] then
-        local ReturnArgs = {FindItemData(...)}
-        if ReturnArgs[4] then ReturnArgs[4] = 0 end
-
-        return unpack(ReturnArgs)
-    end
-
-    return FindItemData(...)
-end)
 
 local OldFire; OldFire = hookfunction(Bullets.Fire, newcclosure(function(Self, ...)
     if SilentAim and math.random(100) <= Window.Flags["SilentAim/HitChance"] then
@@ -1812,6 +1802,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
