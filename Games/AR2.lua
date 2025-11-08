@@ -24,13 +24,13 @@ local LocalPlayer = PlayerService.LocalPlayer
 local Aimbot, SilentAim, Trigger = false, nil, nil
 
 local Mannequin = ReplicatedStorage.Assets.Mannequin
-local LootBins = Workspace.Map.Shared.LootBins
-local Randoms = Workspace.Map.Shared.Randoms
-local Vehicles = Workspace.Vehicles.Spawned
+local LootBins
+local Randoms
+local Vehicles
 local Characters = Workspace.Characters
 local Corpses = Workspace.Corpses
 local Zombies = Workspace.Zombies
-local Loot = Workspace.Loot
+local Loot
 
 local Framework = require(ReplicatedFirst:WaitForChild("Framework"))
 Framework:WaitForLoaded()
@@ -1895,3 +1895,4 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
