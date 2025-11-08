@@ -1689,23 +1689,6 @@ for Index, Corpse in pairs(Corpses:GetChildren()) do
         "AR2/ESP/Corpses", "AR2/ESP/Corpses", Window.Flags
     )
 end
-for Index, Zombie in pairs(Zombies:GetChildren()) do
-    if not Zombie.PrimaryPart then continue end
-    local Config = require(Zombies.Configs[Zombie.Name])
-
-    if not Config.Inherits then continue end
-    for Index, Inherit in pairs(Config.Inherits) do
-        for Index, Data in pairs(ZombieInherits) do
-            if Inherit ~= Data[1] then continue end --print(Inherit.Name)
-            local InheritName = Inherit:gsub("Presets.", ""):gsub(" ", "")
-
-            Parvus.Utilities.Drawing:AddObject(
-                Zombie, Zombie.Name, Zombie.PrimaryPart, "AR2/ESP/Zombies",
-                "AR2/ESP/Zombies/"..InheritName, Window.Flags
-            )
-        end
-    end
-end
 
 Corpses.ChildAdded:Connect(function(Corpse)
     if Corpse.Name == "Zombie" then return end
@@ -1756,6 +1739,7 @@ end)
 PlayerService.PlayerRemoving:Connect(function(Player)
     Parvus.Utilities.Drawing:RemoveESP(Player)
 end)
+
 
 
 
